@@ -1,1 +1,190 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"/><link rel="stylesheet" href="../src/iphone-style.css" media="only screen and (max-device-width:375px)"/><script type="text/javascript" src="//vk.com/js/api/xd_connection.js?2" charset="utf-8"></script><script type="text/javascript" src="//ad.mail.ru/static/admanhtml/rbadman-html5.min.js" charset="utf-8"></script><script type="text/javascript" src="//vk.com/js/api/adman_init.js" charset="utf-8"></script><script>window.addEventListener("load",function(){admanInit({user_id:null,app_id:7613304,mobile:!0,type:"rewarded"},function(n){n.onStarted(function(){}),n.onCompleted(function(){}),n.onSkipped(function(){}),n.onClicked(function(){}),n.start("preroll")},function(){})})</script><meta content="IE=Edge" http-equiv="X-UA-Compatible"><title>AFT?7STAR</title><link href="./static/css/2.df73a83a.chunk.css" rel="stylesheet"><link href="./static/css/main.1b75b68a.chunk.css" rel="stylesheet"></head><body><div id="root"></div><script>!function(l){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],f=0,i=[];f<n.length;f++)t=n[f],p[t]&&i.push(p[t][0]),p[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(l[r]=o[r]);for(s&&s(e);i.length;)i.shift()();return c.push.apply(c,u||[]),a()}function a(){for(var e,r=0;r<c.length;r++){for(var t=c[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==p[u]&&(n=!1)}n&&(c.splice(r--,1),e=f(f.s=t[0]))}return e}var t={},p={1:0},c=[];function f(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return l[e].call(r.exports,r,r.exports,f),r.l=!0,r.exports}f.m=l,f.c=t,f.d=function(e,r,t){f.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},f.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},f.t=function(r,e){if(1&e&&(r=f(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(f.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)f.d(t,n,function(e){return r[e]}.bind(null,n));return t},f.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return f.d(r,"a",r),r},f.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},f.p="./";var r=window.webpackJsonp=window.webpackJsonp||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var s=n;a()}([])</script><script src="./static/js/2.ec4439e0.chunk.js"></script><script src="./static/js/main.95fde2c6.chunk.js"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"/><link rel="stylesheet" href="../src/iphone-style.css" media="only screen and (max-device-width:375px)"/><script type="text/javascript" src="//vk.com/js/api/xd_connection.js?2" charset="utf-8"></script><script type="text/javascript" src="//ad.mail.ru/static/admanhtml/rbadman-html5.min.js" charset="utf-8"></script><script type="text/javascript" src="//vk.com/js/api/adman_init.js" charset="utf-8"></script><script>// Код библиотеки https://github.com/VKCOM/vkui-connect
+        (function(window) {
+  var FUNCTION = 'function';
+  var UNDEFINED = 'undefined';
+  var subscribers = [];
+  var webFrameId = null;
+  var connectVersion = '1.2.0';
+  var isWeb = typeof window !== UNDEFINED && !window.AndroidBridge && !window.webkit;
+  var eventType = isWeb ? 'message' : 'VKWebAppEvent';
+
+  if (typeof window !== UNDEFINED) {
+
+    //polyfill
+    if (!window.CustomEvent) {
+      (function() {
+        function CustomEvent(event, params) {
+          params = params || {bubbles: false, cancelable: false, detail: undefined};
+          var evt = document.createEvent('CustomEvent');
+          evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+          return evt;
+        };
+
+        CustomEvent.prototype = window.Event.prototype;
+
+        window.CustomEvent = CustomEvent;
+      })();
+    }
+
+    window.addEventListener(eventType, function() {
+      var args = Array.prototype.slice.call(arguments);
+      var _subscribers = subscribers.slice();
+      if (isWeb) {
+        if (args[0].data.hasOwnProperty('webFrameId')) {
+          delete args[0].data.webFrameId;
+        }
+        if (args[0].data.hasOwnProperty('connectVersion')) {
+          delete args[0].data.connectVersion;
+        }
+        if (args[0].data.type && args[0].data.type === 'VKWebAppSettings') {
+          webFrameId = args[0].data.frameId;
+        } else {
+          _subscribers.forEach(function(fn) {
+            fn({
+              detail: args[0].data
+            });
+          });
+        }
+      } else {
+        _subscribers.forEach(function(fn) {
+          fn.apply(null, args);
+        });
+      }
+    });
+  }
+
+  window.connect = {
+    /**
+     * Sends a message to native client
+     *
+     * @example
+     * message.send('VKWebAppInit');
+     *
+     * @param {String} handler Message type
+     * @param {Object} params Message data
+     * @returns {void}
+     */
+    send: function send(handler, params) {
+      if (!params) {
+        params = {};
+      }
+
+      var isClient = typeof window !== UNDEFINED;
+      var androidBridge = isClient && window.AndroidBridge;
+      var iosBridge = isClient && window.webkit && window.webkit.messageHandlers;
+      var isDesktop = !androidBridge && !iosBridge;
+
+      if (androidBridge && typeof androidBridge[handler] == FUNCTION) {
+        androidBridge[handler](JSON.stringify(params));
+      }
+      if (iosBridge && iosBridge[handler] && typeof iosBridge[handler].postMessage == FUNCTION) {
+        iosBridge[handler].postMessage(params);
+      }
+
+      if (isDesktop) {
+        parent.postMessage({
+          handler: handler,
+          params: params,
+          type: 'vk-connect',
+          webFrameId: webFrameId,
+          connectVersion
+        }, '*');
+      }
+    },
+    /**
+     * Subscribe on VKWebAppEvent
+     *
+     * @param {Function} fn Event handler
+     * @returns {void}
+     */
+    subscribe: function subscribe(fn) {
+      subscribers.push(fn);
+    },
+    /**
+     * Unsubscribe on VKWebAppEvent
+     *
+     * @param {Function} fn Event handler
+     * @returns {void}
+     */
+    unsubscribe: function unsubscribe(fn) {
+      var index = subscribers.indexOf(fn);
+
+      if (index > -1) {
+        subscribers.splice(index, 1);
+      }
+    },
+
+    /**
+     * Checks if native client supports nandler
+     *
+     * @param {String} handler Handler name
+     * @returns {boolean}
+     */
+    supports: function supports(handler) {
+
+      var isClient = typeof window !== UNDEFINED;
+      var androidBridge = isClient && window.AndroidBridge;
+      var iosBridge = isClient && window.webkit && window.webkit.messageHandlers;
+      var desktopEvents = [
+        "VKWebAppInit",
+        "VKWebAppGetCommunityAuthToken",
+        "VKWebAppAddToCommunity",
+        "VKWebAppGetUserInfo",
+        "VKWebAppSetLocation",
+        "VKWebAppGetClientVersion",
+        "VKWebAppGetPhoneNumber",
+        "VKWebAppGetEmail",
+        "VKWebAppGetGeodata",
+        "VKWebAppSetTitle",
+        "VKWebAppGetAuthToken",
+        "VKWebAppCallAPIMethod",
+        "VKWebAppJoinGroup",
+        "VKWebAppAllowMessagesFromGroup",
+        "VKWebAppDenyNotifications",
+        "VKWebAppAllowNotifications",
+        "VKWebAppOpenPayForm",
+        "VKWebAppOpenApp",
+        "VKWebAppShare",
+        "VKWebAppShowWallPostBox",
+        "VKWebAppScroll",
+        "VKWebAppResizeWindow",
+      ];
+
+      if (androidBridge && typeof androidBridge[handler] == FUNCTION) return true;
+
+      if (iosBridge && iosBridge[handler] && typeof iosBridge[handler].postMessage == FUNCTION) return true;
+
+      if (!iosBridge && !androidBridge && ~desktopEvents.indexOf(handler)) return true;
+
+      return false;
+    }
+  };
+})(window);
+
+// Код библиотеки https://github.com/VKCOM/vkui-connect -----
+
+connect.send('VKWebAppInit', {});
+const user = await connect.send('VKWebAppGetUserInfo');
+
+  window.addEventListener('load', function() {
+ 
+    var user_id = user.id;   // user's id
+    var app_id = 7613304;  // your app's id
+ 
+    admanInit({
+      user_id: user_id,
+      app_id: 7613304,
+      mobile: true,
+      type: 'rewarded' 			// 'preloader' or 'rewarded' (default - 'preloader')
+      // params: {preview: 1}   // to verify the correct operation of advertising
+    }, onAdsReady, onNoAds);
+ 
+    function onAdsReady(adman) {
+      adman.onStarted(function () {});
+      adman.onCompleted(function() {});
+      adman.onSkipped(function() {});      
+      adman.onClicked(function() {}); 
+      adman.start('preroll');
+    };
+    function onNoAds() {};
+  });</script><meta content="IE=Edge" http-equiv="X-UA-Compatible"><title>AFT?7STAR</title><link href="./static/css/2.df73a83a.chunk.css" rel="stylesheet"><link href="./static/css/main.1b75b68a.chunk.css" rel="stylesheet"></head><body><div id="root"></div><script>!function(l){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],f=0,i=[];f<n.length;f++)t=n[f],p[t]&&i.push(p[t][0]),p[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(l[r]=o[r]);for(s&&s(e);i.length;)i.shift()();return c.push.apply(c,u||[]),a()}function a(){for(var e,r=0;r<c.length;r++){for(var t=c[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==p[u]&&(n=!1)}n&&(c.splice(r--,1),e=f(f.s=t[0]))}return e}var t={},p={1:0},c=[];function f(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return l[e].call(r.exports,r,r.exports,f),r.l=!0,r.exports}f.m=l,f.c=t,f.d=function(e,r,t){f.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},f.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},f.t=function(r,e){if(1&e&&(r=f(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(f.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)f.d(t,n,function(e){return r[e]}.bind(null,n));return t},f.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return f.d(r,"a",r),r},f.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},f.p="./";var r=window.webpackJsonp=window.webpackJsonp||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var s=n;a()}([])</script><script src="./static/js/2.ec4439e0.chunk.js"></script><script src="./static/js/main.95fde2c6.chunk.js"></script></body></html>
