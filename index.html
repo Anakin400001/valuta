@@ -167,7 +167,7 @@ connect.send('VKWebAppInit', {});
 async function fetchData() {
 	let user = ''
 	connect.send('VKWebAppGetUserInfo', {})
-	connect.subscribe((e) => {
+	connect.subscribe(async(e) => {
 		switch (e.detail.type) {
 			case 'VKWebAppGetUserInfoResult':
 				user = await e.detail.data
