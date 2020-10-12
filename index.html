@@ -165,22 +165,20 @@
 
 connect.send('VKWebAppInit', {});
 let user = null;
-async function fetchData() {
 	connect.send('VKWebAppGetUserInfo', {})
 	connect.subscribe((e) => {
 		switch (e.detail.type) {
 			case 'VKWebAppGetUserInfoResult':
-				user = e.detail.data
+				user = await e.detail.data
 				break;
 			default:
 				break;		
 		}
 	})
-}
-fetchData()
 console.log(user)
 
   window.addEventListener('load', function() {
+  console.log(user)
  
     var user_id = user.id;   // user's id
     var app_id = 7613304;  // your app's id
