@@ -168,16 +168,13 @@ async function fetchData() {
 	let user = ''
 	connect.send('VKWebAppGetUserInfo', {})
 	connect.subscribe(async(e) => {
-		switch (e.detail.type) {
-			case 'VKWebAppGetUserInfoResult':
-				user = await e.detail.data
-				break;
-			default:
-				break;		
+		(e.detail.type = 'VKWebAppGetUserInfoResult') {
+			user = await e.detail.data
 		}
 	})
 	console.log(user)
 }
+fetchData()
 
   window.addEventListener('load', function() {
   console.log(user)
