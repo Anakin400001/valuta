@@ -170,7 +170,7 @@ async function fetchData() {
 	connect.subscribe(async(e) => {
 			switch (e.detail.type) {
 				case 'VKWebAppGetUserInfoResult':
-					user = await e.detail.data
+					user_info(e.detail.data)
 					break;
 				default:
 				break;
@@ -179,6 +179,9 @@ async function fetchData() {
 	console.log(user)
 }
 fetchData()
+function user_info(user) {
+	return console.log(user)
+}
 
   window.addEventListener('load', function() {
   console.log(user)
