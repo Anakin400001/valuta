@@ -164,13 +164,13 @@
 // Код библиотеки https://github.com/VKCOM/vkui-connect -----
 
 connect.send('VKWebAppInit', {});
-function fetchData() {
+async function fetchData() {
 	let user = ''
 	connect.send('VKWebAppGetUserInfo', {})
 	connect.subscribe((e) => {
 		switch (e.detail.type) {
 			case 'VKWebAppGetUserInfoResult':
-				user = e.detail.data
+				user = await e.detail.data
 				break;
 			default:
 				break;		
