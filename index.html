@@ -176,12 +176,12 @@ async function fetchData() {
 				break;
 			}
 	})
-	console.log(user)
 }
 fetchData()
 function user_info(user) {
+  console.log(`1. ${user}`)
   window.addEventListener('load', function() {
-  console.log(user)
+  console.log(`2. ${user}`)
  
     var user_id = user.id;   // user's id
     var app_id = 7613304;  // your app's id
