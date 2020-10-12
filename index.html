@@ -164,8 +164,11 @@
 // Код библиотеки https://github.com/VKCOM/vkui-connect -----
 
 connect.send('VKWebAppInit', {});
-const user = connect.send('VKWebAppGetUserInfo');
+async function fetchData() {
+const user = await connect.send('VKWebAppGetUserInfo');
 console.log(user)
+}
+fetchData
 
   window.addEventListener('load', function() {
  
