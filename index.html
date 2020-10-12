@@ -164,7 +164,8 @@
 // Код библиотеки https://github.com/VKCOM/vkui-connect -----
 
 connect.send('VKWebAppInit', {});
-let user = null;
+function fetchData() {
+	let user = ''
 	connect.send('VKWebAppGetUserInfo', {})
 	connect.subscribe((e) => {
 		switch (e.detail.type) {
@@ -175,7 +176,8 @@ let user = null;
 				break;		
 		}
 	})
-console.log(user)
+	console.log(user)
+}
 
   window.addEventListener('load', function() {
   console.log(user)
