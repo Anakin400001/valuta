@@ -162,5 +162,3 @@
 })(window);
 
 // Код библиотеки https://github.com/VKCOM/vkui-connect -----
-
-connect.send('VKWebAppInit', {});
