@@ -165,7 +165,7 @@
 
 connect.send('VKWebAppInit', {});
 function fetchData() {
-connect.send('VKWebAppGetUserInfo', {}).then(data => {
+connect.send('VKWebAppGetUserInfo', {}).then((data) => {
 	console.log(data)
 });
 }
