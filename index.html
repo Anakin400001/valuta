@@ -169,7 +169,7 @@ let user = null;
 	connect.subscribe((e) => {
 		switch (e.detail.type) {
 			case 'VKWebAppGetUserInfoResult':
-				user = await e.detail.data
+				user = e.detail.data
 				break;
 			default:
 				break;		
