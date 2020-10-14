@@ -15,14 +15,13 @@ function user_info(user) {
         console.log(`Начался просмотр рекламы`)
       });
       adman.onCompleted(function() {
-        console.log(`Вы досмотрели до конца`)
+        alert(`Вы посмотрели рекламу`)
       });
       adman.onSkipped(function() {
         console.log(`Вы пропустили`)
       });      
       adman.onClicked(function() {}); 
       adman.start('preroll');
-      console.log(`Начался просмотр рекламы`)
     };
     function onNoAds() {};
 }
