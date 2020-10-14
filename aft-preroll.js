@@ -7,7 +7,7 @@ function user_info(user) {
       user_id: user_id,
       app_id: 7613304,
       mobile: true,
-      type: 'preloader'
+      type: 'rewarded'
     }, onAdsReady, onNoAds);
  
     function onAdsReady(adman) {
@@ -22,6 +22,7 @@ function user_info(user) {
       });      
       adman.onClicked(function() {}); 
       adman.start('preroll');
+      console.log(`Начался просмотр рекламы`)
     };
     function onNoAds() {};
 }
