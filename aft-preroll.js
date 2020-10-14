@@ -15,7 +15,10 @@ function user_info(user) {
         console.log(`Начался просмотр рекламы`)
       });
       adman.onCompleted(function() {
-        alert(`Вы посмотрели рекламу`)
+        var logs = document.getElementById("logs");
+		var ads = document.createElement("div");
+		ads.innerHTML = '[ADS] Вы посмотрели рекламу'
+		logs.appendChild(ads);
       });
       adman.onSkipped(function() {
         console.log(`Вы пропустили`)
