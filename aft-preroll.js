@@ -7,7 +7,7 @@ function user_info(user) {
       user_id: user_id,
       app_id: 7613304,
       mobile: true,
-      type: 'rewarded'
+      type: 'preloader'
     }, onAdsReady, onNoAds);
  
     function onAdsReady(adman) {
