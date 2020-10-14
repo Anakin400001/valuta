@@ -1,6 +1,6 @@
 function user_info(user) {
  
-    var user_id = user.id;   // user's id
+    var user_id = user;   // user's id
     var app_id = 7613304;  // your app's id
  
     admanInit({
